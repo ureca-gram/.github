@@ -39,7 +39,7 @@
         <a href="https://github.com/sbi1024">@sbi1024</a>
       </td>
       <td align="center">팀장</td>
-      <td>프로젝트 총괄, 프론트엔드 개발 지원, UI/UX 구현</td>
+      <td>프로젝트 총괄, 프론트엔드 개발</td>
     </tr>
     <tr>
       <td align="center" width="150">
@@ -176,5 +176,38 @@ gantt
 </table>
 
 ## 6. 데이터베이스 모델링(ERD)
-
 <img width="1547" height="849" alt="image" src="https://github.com/user-attachments/assets/3a631fd1-c2db-4e4a-9a57-74c7d62a2829" />
+
+## 7. 에러와 에러 해결 (1:N 관계에서의 Fetch Join + Limit 문제)
+### 7.1 문제 상황  
+- `HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory` 경고성 로그 문구 출력
+-  일부 부모 엔티티가 누락되거나, 페이지 크기보다 적은 데이터가 조회되거나, 중복된 부모 엔티티가 나타나는 문제가 발생.
+
+### 7.2 문제 원인
+- DB에서 limit은 “행(row)” 기준으로 적용됨.
+- 1:N fetch join 시, 부모 엔티티가 N개의 자식을 가지면 곱해진 행 개수만큼 결과가 생성됨.
+- limit이 이 곱해진 행에 적용되다 보니, 부모 기준 페이징이 깨짐.
+- JPA는 이 조합을 공식적으로 지원하지 않으며, 하이버네이트는 경고를 출력함.
+
+### 7.3 문제 해결 방법 
+- Querydsl에서 `fetch join` 대신 `limit`이 정상 동작하는 방식으로 쿼리 구조 변경
+- ID 기반 2단계 조회 방식으로 변경 
+  - 1차 쿼리 – feed 엔티티의 id 목록만 페이징 조회
+  - 2차 쿼리 – id 목록으로, 연관 데이터 조회
+
+
+## 8. 개발하며 느낀점
+### 서보인
+- Image resizing 처리 로직을 구현하지 못해 아쉬움
+- 좋아요 기능을 제외했지만, 추후 보니 추가했으면 더 나았을 것 같아 아쉬움
+- 댓글 필터링 기능을 구현하지 못한 점이 아쉬움
+
+### 박소연
+- 내 Feed 조회 시 Paging 처리를 하지 않아 아쉬움
+- 사용자 관리 페이지에서 목록 정렬 기능을 고려하지 않은 점이 아쉬움
+- 신고 기능을 구현하지 못해 아쉬움
+
+### 문태신
+- 기능적으로 도전적인 부분이 적었던 점이 아쉬움
+- Fetch join과 Limit Query 관련 로직 개선 필요성을 느낌
+- 예외 상황과 경계 조건에 대한 테스트 커버리지가 부족했던 점이 아쉬움
