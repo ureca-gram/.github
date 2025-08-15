@@ -211,3 +211,11 @@ gantt
 - 기능적으로 도전적인 부분이 적었던 점이 아쉬움
 - Fetch join과 Limit Query 관련 로직 개선 필요성을 느낌
 - 예외 상황과 경계 조건에 대한 테스트 커버리지가 부족했던 점이 아쉬움
+
+## 9. 시연영상 
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=nBhy7vx7y3A" target="_blank">
+    <img width="1913" height="982" alt="image" src="https://github.com/user-attachments/assets/31aafbcb-020d-4095-9d23-a1e61c26ab40" />
+  </a>
+</p>
+
